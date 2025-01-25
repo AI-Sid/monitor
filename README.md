@@ -1,10 +1,38 @@
 # Proxy Settings Monitor for Windows
 ## 1. Вступ
 Програма виконує моніторінг налаштувань **Proxy**. Програма використвує наступні бібліотеки:
-- **golang.org/x/sys/windows** (cтворення локальних Events, іменованих *Mutex*, *Events*, завантаження *DLL*, в тому числі для спостереження за змінами реєстру для *HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings*)
+- **golang.org/x/sys/windows** (cтворення локальних *Events*, іменованих *Mutex*, *Events*, завантаження *DLL*, робота з ресурсами
+- **golang.org/x/sys/windows/registry** для спостереження за змінами реєстру для *HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings*)
 - **github.com/getlantern/systray** (Створення та керування *Windows Tray Icon*)
+Системні інструменти:
+- MSYS2 (https://www.msys2.org/) з встановленними minGW-w64, та minGW-w64-x86_64-make. Шлях до бінарних файлів minGW64 (наприклад, ***C:\msys64\mingw64\bin***)повинен бути доданий до змінної середовища PATH. MinGW64 використовується для компіляції файлів ресурсів *.rc в файли *.syso, для створення ресурсних .dll (тека Debug) та виконання make.
 
 Під час кожного старту моніторінгу - програма записує поточні дані в журнал (%APPDATA%/appname/appname.log), потім під час кожної зміни параметрів - доповнює його новими записами.
+
+## 2. Шаблон проекту
+
+-monitor
+    L assets
+        L <name>
+            L <some resource files>
+            L resources.rc
+        ...
+    L cmd
+        L <name>
+            L main.go
+            L [resources.syso] - створюється скриптами
+        ...
+    L debug
+        L <name>+"Res".dll - файл для використання під час режиму DEBUG окремою одиницею проекту
+    L internal
+        L <package>
+            L <go-files>
+        ...
+    L scripts
+        L common
+            L rebuildOne.bat
+            L resOne.bat
+        L  
 
 ## 2. Створення .exe файлу
 
