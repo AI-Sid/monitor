@@ -1,10 +1,16 @@
 package tools
 
 import (
-	"os"
-
+	//"os"
+    "fmt"
 	"github.com/getlantern/systray"
 )
+
+var module *ResourceModule = nil
+
+func SetResourceModule(name string) {
+    module = InitResourceModule(name)
+}
 
 var appIcon []byte
 
@@ -50,9 +56,20 @@ func onFinish() {
 }
 
 func RunTray() {
-	if icon, err := os.ReadFile("./assets/mp.ico"); err == nil {
-		appIcon = icon
-	}
+    if module == nil {
+        fmt.Println("==Current instance module creation==")
+        module = InitResourceModule("")
+    }
+    icon, err := module.LoadIcon(100)
+    if err == nil {
+        appIcon, err = icon.GetIconFileBytes(-1)
+        if err == nil {
+            fmt.Printf("Icon loaded from resource: (size: %v)\n", len(appIcon))    
+        }
+    }
+    if err != nil {
+        fmt.Printf("Loading Icon error: %v\n", err)
+    }
     RegisterQuitFunc(systray.Quit)
 	systray.Run(onStart, onFinish)
 }

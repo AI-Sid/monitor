@@ -1,20 +1,10 @@
-TARGET_NAME = proxyMon.exe
-TARGET_FOLDER = ./bin
-OS = windows
-ARCH = amd64
-SOURCE = ./cmd/app/main.go 
-LDFLAGS = -H windowsgui 
+.PHONY: all res exe
 
-.PHONY: all build clean
+all:
+	python3 scripts/doBuild.py proxyMon all "-X cmd/proxyMon/main.Build=true"
 
-# Rebuild application
-all: clean build 
+res: 
+	python3 scripts/doBuild.py proxyMon res
 
-# Build application
-build: 
-	mkdir -p $(TARGET_FOLDER)
-	GOOS=$(OS) GOARCH=$(ARCH) go build -ldflags "$(LDFLAGS)" -o $(TARGET_FOLDER)/$(TARGET_NAME) $(SOURCE)
-
-# Clear binaries
-clean: 
-	rm -rf $(TARGET_FOLDER) 
+exe: 
+	python3 scripts/doBuild.py proxyMon exe "-X cmd/proxyMon/main.Build=true"

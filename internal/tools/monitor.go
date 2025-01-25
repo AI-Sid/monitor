@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"sync"
-	"syscall"
 	"time"
 
 	"golang.org/x/sys/windows"
@@ -17,8 +16,7 @@ const (
 )
 
 var (
-	advapi32                   = syscall.NewLazyDLL("Advapi32.dll")
-	winRegNotifyChangeKeyValue = advapi32.NewProc("RegNotifyChangeKeyValue")
+	winRegNotifyChangeKeyValue = GetDllProc("Advapi32.dll", "RegNotifyChangeKeyValue")
 )
 
 var cancel windows.Handle
