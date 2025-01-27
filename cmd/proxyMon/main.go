@@ -4,7 +4,6 @@ import (
 	"AI-Sid/monitor/internal/tools"
 	"flag"
 	"fmt"
-	"strconv"
 )
 
 import _ "AI-Sid/monitor/cmd/proxyMon/resources"
@@ -19,9 +18,7 @@ func usage() {
 }
 
 func init() {
-	buildFlag := false
-	buildFlag, _ = strconv.ParseBool(Build)
-	if !buildFlag {
+	if !tools.SetBuildMode(Build) {
 		tools.SetResourceModule("proxyMon")
 	}
 	flag.Usage = usage
