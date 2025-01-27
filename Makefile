@@ -8,4 +8,3 @@ res:
 	@python3 dorebuild.py res $(comp)
 exe: 
 	@python3 dorebuild.py exe $(comp)
-
