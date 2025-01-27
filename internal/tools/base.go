@@ -2,6 +2,7 @@ package tools
 
 import (
 	"fmt"
+	"strconv"
 	"sync"
 	"syscall"
 
@@ -10,6 +11,16 @@ import (
 
 var stateIsNormal = true
 var stateMutex sync.Mutex
+var buildMode = false
+
+func SetBuildMode(value string) bool {
+	buildMode, _ = strconv.ParseBool(value)
+	return buildMode
+}
+
+func GetBuildMode() bool {
+	return buildMode
+}
 
 func InternalError(err error) {
 	stateMutex.Lock()
